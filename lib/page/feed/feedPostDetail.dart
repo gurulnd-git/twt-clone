@@ -57,7 +57,7 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
   void addLikeToComment(String commentId) {
     var state = Provider.of<FeedState>(context, listen: false);
     var authState = Provider.of<AuthState>(context, listen: false);
-    state.addLikeToTweet(state.tweetDetailModel.last, authState.userId);
+   // state.addLikeToTweet(state.tweetDetailModel.last, authState.userId);
   }
 
   void openImage() async {
@@ -66,7 +66,7 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
 
   void deleteTweet(TweetType type, String tweetId, {String parentkey}) {
     var state = Provider.of<FeedState>(context, listen: false);
-    state.deleteTweet(tweetId, type, parentkey: parentkey);
+   // state.deleteTweet(tweetId, type, parentkey: parentkey);
     Navigator.of(context).pop();
     if (type == TweetType.Detail) Navigator.of(context).pop();
   }

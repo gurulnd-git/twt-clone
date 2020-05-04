@@ -1,5 +1,4 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
@@ -8,8 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final kAnalytics = FirebaseAnalytics();
-final DatabaseReference kDatabase = FirebaseDatabase.instance.reference();
+//final kAnalytics = FirebaseAnalytics();
+//final DatabaseReference kDatabase = FirebaseDatabase.instance.reference();
 final kScreenloader = CustomLoader();
 
 String getPostTime2(String date) {
@@ -129,15 +128,9 @@ void cprint(dynamic data, {String errorIn, String event}) {
   } else if (data != null) {
     print(data);
   }
-  if (event != null) {
-    logEvent(event);
-  }
-}
-
-void logEvent(String event, {Map<String, dynamic> parameter}) {
-  kReleaseMode
-      ? kAnalytics.logEvent(name: event, parameters: parameter)
-      : print("[EVENT]: $event");
+//  if (event != null) {
+//    logEvent(event);
+//  }
 }
 
 void debugLog(String log, {dynamic param = ""}) {

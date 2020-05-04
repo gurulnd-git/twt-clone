@@ -147,7 +147,7 @@ class _FeedPageState extends State<FeedPage> {
             key: _refreshIndicatorKey,
             onRefresh: () async {
               var state = Provider.of<FeedState>(context);
-              state.getDataFromDatabase();
+             // state.getDataFromDatabase();
               return Future.value(true);
             },
             child: _body(),

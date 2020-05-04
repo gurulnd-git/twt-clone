@@ -28,11 +28,9 @@ dependencies:
   provider:
   flutter_native_splash: ^0.1.9
   firebase_auth:
-  firebase_database:
-  firebase_analytics:
 
   # cloud_firestore:
-  firebase_storage: 
+  cloud_firestore: ^0.13.4+2
   image_picker: ^0.6.2
   uuid: ^2.0.0
   async:

@@ -163,7 +163,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (dob != null) {
       model.dob = dob;
     }
-    state.updateUserProfile(model, image: _image);
+   // state.updateUserProfile(model, image: _image);
     Navigator.of(context).pop();
   }
 

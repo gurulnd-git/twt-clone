@@ -95,16 +95,16 @@ class _CreateFeedPageState extends State<CreateFeedPage> {
       createdAt: DateTime.now().toUtc().toString(),
     );
     if (_image != null) {
-      await state.uploadFile(_image).then(
-        (imagePath) {
-          if (imagePath != null) {
-            _model.imagePath = imagePath;
-            state.createTweet(_model);
-          }
-        },
-      );
+//      await state.uploadFile(_image).then(
+//        (imagePath) {
+//          if (imagePath != null) {
+//            _model.imagePath = imagePath;
+//           // state.createTweet(_model);
+//          }
+//        },
+//      );
     } else {
-      state.createTweet(_model);
+      //state.createTweet(_model);
     }
     // state.isBusy = false;
     kScreenloader.hideLoader();

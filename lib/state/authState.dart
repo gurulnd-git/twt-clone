@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path/path.dart' as Path;
 import 'appState.dart';
-import 'package:firebase_database/firebase_database.dart' as dabase;
 
 class AuthState extends AppState {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
@@ -21,7 +18,7 @@ class AuthState extends AppState {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  dabase.Query _profileQuery;
+  //dabase.Query _profileQuery;
   List<User> _profileUserModelList;
   User _userModel;
 
@@ -47,7 +44,7 @@ class AuthState extends AppState {
     _profileUserModelList = null;
     if (isSignInWithGoogle) {
       _googleSignIn.signOut();
-      logEvent('google_logout');
+     // logEvent('google_logout');
     }
     _firebaseAuth.signOut();
     notifyListeners();
@@ -62,10 +59,10 @@ class AuthState extends AppState {
 
   databaseInit() {
     try {
-      if (_profileQuery == null) {
-        _profileQuery = kDatabase.child("profile").child(userId);
-        _profileQuery.onValue.listen(_onProfileChanged);
-      }
+//      if (_profileQuery == null) {
+//        //_profileQuery = kDatabase.child("profile").child(userId);
+//        //_profileQuery.onValue.listen(_onProfileChanged);
+//      }
     } catch (error) {
       cprint(error, errorIn: 'databaseInit');
     }
@@ -84,7 +81,7 @@ class AuthState extends AppState {
     } catch (error) {
       loading = false;
       cprint(error, errorIn: 'signIn');
-      kAnalytics.logLogin(loginMethod: 'email_login');
+     // kAnalytics.logLogin(loginMethod: 'email_login');
       customSnackBar(scaffoldKey, error.message);
       // logoutCallback();
       return null;
@@ -97,7 +94,7 @@ class AuthState extends AppState {
   Future<FirebaseUser> handleGoogleSignIn() async {
     try {
       /// Record log in firebase kAnalytics about Google login
-      kAnalytics.logLogin(loginMethod: 'google_login');
+    //  kAnalytics.logLogin(loginMethod: 'google_login');
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         throw Exception('Google login cancelled by user');
@@ -160,7 +157,7 @@ class AuthState extends AppState {
       );
       user = result.user;
       authStatus = AuthStatus.LOGGED_IN;
-      kAnalytics.logSignUp(signUpMethod: 'register');
+     // kAnalytics.logSignUp(signUpMethod: 'register');
       UserUpdateInfo updateInfo = UserUpdateInfo();
       updateInfo.displayName = userModel.displayName;
       updateInfo.photoUrl = userModel.profilePic;
@@ -185,12 +182,12 @@ class AuthState extends AppState {
     if (newUser) {
       // Create username by the combination of name and id
       user.userName = getUserName(id: user.userId, name: user.displayName);
-      kAnalytics.logEvent(name: 'create_newUser');
+     // kAnalytics.logEvent(name: 'create_newUser');
 
       // Time at which user is created
       user.createdAt = DateTime.now().toUtc().toString();
     }
-    kDatabase.child('profile').child(user.userId).set(user.toJson());
+   // kDatabase.child('profile').child(user.userId).set(user.toJson());
     _userModel = user;
     if (_profileUserModelList != null) {
       _profileUserModelList.last = _userModel;
@@ -202,7 +199,7 @@ class AuthState extends AppState {
   Future<FirebaseUser> getCurrentUser() async {
     try {
       loading = true;
-      logEvent('get_currentUSer');
+      //logEvent('get_currentUSer');
       user = await _firebaseAuth.currentUser();
       if (user != null) {
         authStatus = AuthStatus.LOGGED_IN;
@@ -231,8 +228,8 @@ class AuthState extends AppState {
       // Update user in firebase realtime kDatabase
       createUser(userModel);
       cprint('User email verification complete');
-      logEvent('email_verification_complete',
-          parameter: {userModel.userName: user.email});
+     // logEvent('email_verification_complete',
+    //      parameter: {userModel.userName: user.email});
     }
   }
 
@@ -241,16 +238,16 @@ class AuthState extends AppState {
       GlobalKey<ScaffoldState> scaffoldKey) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     user.sendEmailVerification().then((_) {
-      logEvent('email_verifcation_sent',
-          parameter: {userModel.displayName: user.email});
+     // logEvent('email_verifcation_sent',
+       //   parameter: {userModel.displayName: user.email});
       customSnackBar(
         scaffoldKey,
         'An email verification link is send to your email.',
       );
     }).catchError((error) {
       cprint(error.message, errorIn: 'sendEmailVerification');
-      logEvent('email_verifcation_block',
-          parameter: {userModel.displayName: user.email});
+//      logEvent('email_verifcation_block',
+//          parameter: {userModel.displayName: user.email});
       customSnackBar(
         scaffoldKey,
         error.message,
@@ -271,7 +268,7 @@ class AuthState extends AppState {
       await _firebaseAuth.sendPasswordResetEmail(email: email).then((value) {
         customSnackBar(scaffoldKey,
             'A reset password link is sent yo your mail.You can reset your password from there');
-        logEvent('forgot+password');
+       // logEvent('forgot+password');
       }).catchError((error) {
         cprint(error.message);
         return false;
@@ -283,51 +280,51 @@ class AuthState extends AppState {
   }
 
   /// `Update user` profile
-  Future<void> updateUserProfile(User userModel, {File image}) async {
-    try {
-      if (image == null) {
-        createUser(userModel);
-      } else {
-        StorageReference storageReference = FirebaseStorage.instance
-            .ref()
-            .child('user/profile/${Path.basename(image.path)}');
-        StorageUploadTask uploadTask = storageReference.putFile(image);
-        await uploadTask.onComplete.then((value) {
-          storageReference.getDownloadURL().then((fileURL) async {
-            print(fileURL);
-            UserUpdateInfo updateInfo = UserUpdateInfo();
-            updateInfo.displayName = userModel?.displayName ?? user.displayName;
-            updateInfo.photoUrl = fileURL;
-            await user.updateProfile(updateInfo);
-            if (userModel != null) {
-              userModel.profilePic = fileURL;
-              createUser(userModel);
-            } else {
-              _userModel.profilePic = fileURL;
-              createUser(_userModel);
-            }
-          });
-        });
-      }
-      logEvent('update_user');
-    } catch (error) {
-      cprint(error, errorIn: 'updateUserProfile');
-    }
-  }
- 
+//  Future<void> updateUserProfile(User userModel, {File image}) async {
+//    try {
+//      if (image == null) {
+//        createUser(userModel);
+//      } else {
+////        StorageReference storageReference = FirebaseStorage.instance
+////            .ref()
+////            .child('user/profile/${Path.basename(image.path)}');
+////        StorageUploadTask uploadTask = storageReference.putFile(image);
+//        await uploadTask.onComplete.then((value) {
+//          storageReference.getDownloadURL().then((fileURL) async {
+//            print(fileURL);
+//            UserUpdateInfo updateInfo = UserUpdateInfo();
+//            updateInfo.displayName = userModel?.displayName ?? user.displayName;
+//            updateInfo.photoUrl = fileURL;
+//            await user.updateProfile(updateInfo);
+//            if (userModel != null) {
+//              userModel.profilePic = fileURL;
+//              createUser(userModel);
+//            } else {
+//              _userModel.profilePic = fileURL;
+//              createUser(_userModel);
+//            }
+//          });
+//        });
+//      }
+//     // logEvent('update_user');
+//    } catch (error) {
+//      cprint(error, errorIn: 'updateUserProfile');
+//    }
+//  }
+//
   
   /// `Fetch` user `detail` whoose userId is passed
   Future<User> getuserDetail(String userId) async {
     User user;
-    var snapshot = await kDatabase.child('profile').child(userId).once();
-    if (snapshot.value != null) {
-      var map = snapshot.value;
-      user = User.fromJson(map);
-      user.key = snapshot.key;
-      return user;
-    } else {
-      return null;
-    }
+//    var snapshot = await kDatabase.child('profile').child(userId).once();
+//    if (snapshot.value != null) {
+//      var map = snapshot.value;
+//      user = User.fromJson(map);
+//      user.key = snapshot.key;
+//      return user;
+//    } else {
+//      return null;
+//    }
   }
 
   /// Fetch user profile
@@ -338,28 +335,28 @@ class AuthState extends AppState {
         _profileUserModelList = [];
       }
       userProfileId = userProfileId == null ? userId : userProfileId;
-      kDatabase
-          .child("profile")
-          .child(userProfileId)
-          .once()
-          .then((DataSnapshot snapshot) {
-        if (snapshot.value != null) {
-          var map = snapshot.value;
-          if (map != null) {
-            _profileUserModelList.add(User.fromJson(map));
-            if (userProfileId == userId) {
-              _userModel = _profileUserModelList.last;
-              _userModel.isVerified = user.isEmailVerified;
-              if (!user.isEmailVerified) {
-                // Check if user verified his email address
-                reloadUser();
-              }
-            }
-            logEvent('get_profile');
-          }
-        }
-        loading = false;
-      });
+//      kDatabase
+//          .child("profile")
+//          .child(userProfileId)
+//          .once()
+//          .then((DataSnapshot snapshot) {
+//        if (snapshot.value != null) {
+//          var map = snapshot.value;
+//          if (map != null) {
+//            _profileUserModelList.add(User.fromJson(map));
+//            if (userProfileId == userId) {
+//              _userModel = _profileUserModelList.last;
+//              _userModel.isVerified = user.isEmailVerified;
+//              if (!user.isEmailVerified) {
+//                // Check if user verified his email address
+//                reloadUser();
+//              }
+//            }
+//            logEvent('get_profile');
+//          }
+//        }
+//        loading = false;
+//      });
     } catch (error) {
       loading = false;
       cprint(error, errorIn: 'getProfileUser');
@@ -403,14 +400,14 @@ class AuthState extends AppState {
       // update logged-in user's following count
       userModel.following = userModel.followingList.length;
 
-      kDatabase
-          .child('profile')
-          .child(profileUserModel.userId)
-          .set(profileUserModel.toJson());
-      kDatabase
-          .child('profile')
-          .child(userModel.userId)
-          .set(userModel.toJson());
+//      kDatabase
+//          .child('profile')
+//          .child(profileUserModel.userId)
+//          .set(profileUserModel.toJson());
+//      kDatabase
+//          .child('profile')
+//          .child(userModel.userId)
+//          .set(userModel.toJson());
       cprint('user added to following list', event: 'add_follow');
       notifyListeners();
     } catch (error) {
@@ -419,11 +416,11 @@ class AuthState extends AppState {
   }
 
   /// Trigger when logged-in user's profile chanege
-  void _onProfileChanged(Event event) {
-    if (event.snapshot != null) {
-      _userModel = User.fromJson(event.snapshot.value);
-      cprint('User Updated');
-      notifyListeners();
-    }
-  }
+//  void _onProfileChanged(Event event) {
+//    if (event.snapshot != null) {
+//      _userModel = User.fromJson(event.snapshot.value);
+//      cprint('User Updated');
+//      notifyListeners();
+//    }
+//  }
 }
