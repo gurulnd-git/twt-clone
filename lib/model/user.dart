@@ -11,7 +11,7 @@ class User {
   String location;
   String dob;
   String createdAt;
-  bool isVerified;
+  bool isVerified = false;
   int followers;
   int following;
   List<String> followersList;

@@ -7,7 +7,6 @@ import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/page/common/usersListPage.dart';
 import 'package:flutter_twitter_clone/page/common/widget/userListWidget.dart';
-import 'package:flutter_twitter_clone/page/message/chatScreenPage.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';

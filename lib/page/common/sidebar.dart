@@ -61,12 +61,12 @@ class _SidebarMenuState extends State<SidebarMenu> {
               },
               title: Row(
                 children: <Widget>[
-                  UrlText(
-                    text: state.userModel.displayName ??
-                        state.userModel.email.split('.')[0],
-                    style: onPrimaryTitleText.copyWith(
-                        color: Colors.black, fontSize: 20),
-                  ),
+//                  UrlText(
+//                    text: state.userModel.displayName ??
+//                        state.userModel.email,
+//                    style: onPrimaryTitleText.copyWith(
+//                        color: Colors.black, fontSize: 20),
+//                  ),
                   SizedBox(
                     width: 3,
                   ),
