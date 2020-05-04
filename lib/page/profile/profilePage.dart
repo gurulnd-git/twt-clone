@@ -11,8 +11,6 @@ import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customUrlText.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/emptyList.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/rippleButton.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/tweet.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/widgets/tweetBottomSheet.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -208,12 +206,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             .map(
                               (x) => Container(
                                 color: TwitterColor.white,
-                                child: Tweet(
-                                  model: x,
-                                  isDisplayOnProfile: true,
-                                  trailing: TweetBottomSheet().tweetOptionIcon(
-                                      context, x, TweetType.Tweet),
-                                ),
                               ),
                             )
                             .toList(),

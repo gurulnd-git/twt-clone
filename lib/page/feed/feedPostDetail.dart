@@ -6,8 +6,6 @@ import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/tweet.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/widgets/tweetBottomSheet.dart';
 import 'package:provider/provider.dart';
 
 class FeedPostDetail extends StatefulWidget {
@@ -39,21 +37,21 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
   }
 
   Widget _commentRow(FeedModel model) {
-    return Tweet(
-      model: model,
-      type: TweetType.Reply,
-      trailing:
-          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Reply),
-    );
+//    return Tweet(
+//      model: model,
+//      type: TweetType.Reply,
+//      trailing:
+//          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Reply),
+//    );
   }
 
   Widget _postBody(FeedModel model) {
-    return Tweet(
-      model: model,
-      type: TweetType.Detail,
-      trailing:
-          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Detail),
-    );
+//    return Tweet(
+//      model: model,
+//      type: TweetType.Detail,
+//      trailing:
+//          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Detail),
+//    );
   }
 
   void addLikeToComment(String commentId) {

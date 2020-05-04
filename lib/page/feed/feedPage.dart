@@ -10,8 +10,6 @@ import 'package:flutter_twitter_clone/widgets/customAppBar.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/emptyList.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/tweet.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/widgets/tweetBottomSheet.dart';
 import 'package:provider/provider.dart';
 
 
@@ -122,11 +120,11 @@ class _FeedPageState extends State<FeedPage> {
                         (model) {
                           return Container(
                             color: Colors.white,
-                            child: Tweet(
-                              model: model,
-                              trailing: TweetBottomSheet().tweetOptionIcon(
-                                  context, model, TweetType.Tweet),
-                            ),
+//                            child: Tweet(
+//                              model: model,
+//                              trailing: TweetBottomSheet().tweetOptionIcon(
+//                                  context, model, TweetType.Tweet),
+//                            ),
                           );
                         },
                       ).toList(),

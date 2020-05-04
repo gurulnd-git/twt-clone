@@ -7,7 +7,6 @@ import 'package:flutter_twitter_clone/model/user.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/widgets/tweetIconsRow.dart';
 import 'package:provider/provider.dart';
 
 class ImageViewPge extends StatefulWidget {
@@ -78,12 +77,7 @@ class _ImageViewPgeState extends State<ImageViewPge> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      TweetIconsRow(
-                        model: state.tweetDetailModel.last,
-                        iconColor: Theme.of(context).colorScheme.onPrimary,
-                        iconEnableColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                      ),
+
                       Container(
                         color: Colors.brown.shade700.withAlpha(200),
                         padding:
